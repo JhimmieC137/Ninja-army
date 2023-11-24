@@ -8,7 +8,5 @@ export const dataSourceOptions: DataSourceOptions = {
   migrations: ['dist/migrations/*.js'],
 };
 
-console.log(dbConfig());
-
 const dataSource = new DataSource(dataSourceOptions);
 export default dataSource;
