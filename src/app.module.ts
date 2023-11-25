@@ -15,9 +15,14 @@ import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     NinjasModule,
     PhonesModule,
     RouterModule.register([
+      {
+        path: '/api/v1/',
+        module: AuthModule,
+      },
       {
         path: '/api/v1/',
         module: NinjasModule,

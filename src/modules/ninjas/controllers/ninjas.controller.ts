@@ -8,7 +8,7 @@ import {
   // ParseIntPipe,
 } from '@nestjs/common';
 import { NinjasService } from '../services/ninjas.service';
-import { registerNinjaDto, welcomeNinjasDto } from '../dtos/registerNinjaDto';
+import { welcomeNinjasDto } from '../dtos/registerNinjaDto';
 import {
   CustomInfoResDto,
   CustomListResDto,
@@ -40,16 +40,6 @@ export class NinjasController {
     );
 
     return greeting;
-  }
-
-  @Post('/sign-up')
-  async createNinja(
-    @Body() registerNinja: registerNinjaDto,
-  ): Promise<CustomListResDto> {
-    const ninja = await this.ninjaService.create(registerNinja);
-    const response = await this.customListResDto;
-    response.results = ninja;
-    return response;
   }
 
   @Delete('/:id')

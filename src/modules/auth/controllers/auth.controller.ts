@@ -6,14 +6,23 @@ import {
   RegisterDto,
   SignInDto,
 } from '../dtos/authRequests.dto';
+import { CustomListResDto, CustomResDto } from 'src/helpers/schemas.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private customListRes: CustomListResDto,
+    private customRes: CustomResDto,
+  ) {}
 
   @Post('/reigister')
-  createNinja(@Body() registerNinjaDto: RegisterDto) {
-    this.authService.registerNinja(registerNinjaDto);
+  async createNinja(@Body() registerNinjaDto: RegisterDto) {
+    const newNinja = await this.authService.registerNinja(registerNinjaDto);
+    const response = this.customRes;
+    response.results = { ...newNinja };
+    response.message = `Welcome ${newNinja.first_name} of the ${newNinja.last_name} clan`;
+    return response;
   }
 
   @Post('/sign-in')

@@ -5,10 +5,7 @@ import {
   NinjaWeaponsController,
 } from './controllers/ninjas.controller';
 import { NinjasService } from './services/ninjas.service';
-import {
-  CustomInfoResDto,
-  CustomListResDto,
-} from '../../helpers/schemas.dto';
+import { CustomInfoResDto, CustomListResDto } from '../../helpers/schemas.dto';
 import { Ninja } from './entities/ninja.entity';
 
 @Module({

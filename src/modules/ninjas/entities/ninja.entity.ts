@@ -1,5 +1,10 @@
-// import { v4 as uuid } from 'uuid';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { NINJA_LEVEL } from '../dtos/enums';
 
 @Entity()
@@ -13,29 +18,41 @@ export class Ninja {
   })
   first_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string;
 
   @Column({
-    nullable: true,
+    nullable: false,
+    unique: true,
   })
   nick_name: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+    type: 'enum',
+    enum: NINJA_LEVEL,
+    default: NINJA_LEVEL.NOOBIE,
+  })
   level: NINJA_LEVEL;
+
+  @OneToMany(() => Weapon, (weapon) => weapon.user)
+  weapons: Weapon[];
 
   @Column({ default: true })
   is_active: boolean;
 }
 
 @Entity()
-export class Weapons {
+export class Weapon {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -51,6 +68,6 @@ export class Weapons {
   @Column({ default: 50 })
   quantity: number;
 
-  @Column({ default: 50 })
-  users: number;
+  @ManyToOne(() => Ninja, (ninja) => ninja.weapons)
+  user: Ninja;
 }

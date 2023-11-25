@@ -1,4 +1,4 @@
-import { Injectable, Body } from '@nestjs/common';
+import { Injectable, Body, HttpException, HttpStatus } from '@nestjs/common';
 import {
   ChangePasswordDto,
   ConfirmEmailDto,
@@ -17,8 +17,46 @@ export class AuthService {
     private ninjaRepository: Repository<Ninja>,
   ) {}
 
-  registerNinja(@Body() registerDto: RegisterDto) {
-    this.ninjaRepository.create(registerDto);
+  async registerNinja(@Body() registerDto: RegisterDto): Promise<Ninja> {
+    if (
+      await this.ninjaRepository.findOne({
+        where: {
+          email: registerDto.email,
+        },
+      })
+    ) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Ninja with email already exists in the shinobi world!',
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: 'Email vallidation',
+        },
+      );
+    } else if (
+      await this.ninjaRepository.findOne({
+        where: {
+          nick_name: registerDto.nick_name,
+        },
+      })
+    ) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'A shinobi must have a unique nick name to be rembered by!',
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: 'Email vallidation',
+        },
+      );
+    } else {
+      const ninjaObj = await this.ninjaRepository.create(registerDto);
+      const newNinja = await this.ninjaRepository.save(ninjaObj);
+      return newNinja;
+    }
   }
 
   signInNinja(@Body() signInDto: SignInDto) {
