@@ -1,5 +1,6 @@
 // import { v4 as uuid } from 'uuid';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { NINJA_LEVEL } from '../dtos/enums';
 
 @Entity()
 export class Ninja {
@@ -19,6 +20,15 @@ export class Ninja {
     nullable: true,
   })
   nick_name: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  level: NINJA_LEVEL;
 
   @Column({ default: true })
   is_active: boolean;

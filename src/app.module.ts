@@ -8,16 +8,31 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { baseConfig } from './settings/base.config';
 import { dataSourceOptions } from './settings/dataSource.config';
 import { dbConfig } from './settings/db.config';
+// import { RouterModule } from 'nest-router/router.module';
+// import { routes } from './routes';
+import { RouterModule } from '@nestjs/core';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     NinjasModule,
     PhonesModule,
+    RouterModule.register([
+      {
+        path: '/api/v1/',
+        module: NinjasModule,
+      },
+      {
+        path: '/api/v1/',
+        module: PhonesModule,
+      },
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [baseConfig, dbConfig],
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

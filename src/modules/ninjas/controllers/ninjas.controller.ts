@@ -8,14 +8,11 @@ import {
   // ParseIntPipe,
 } from '@nestjs/common';
 import { NinjasService } from '../services/ninjas.service';
-import {
-  registerNinjaDto,
-  welcomeNinjasDto,
-} from '../dtos/request/registerNinjaDto';
+import { registerNinjaDto, welcomeNinjasDto } from '../dtos/registerNinjaDto';
 import {
   CustomInfoResDto,
   CustomListResDto,
-} from '../dtos/response/customResposeDto';
+} from '../../../helpers/schemas.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('ninjas')
